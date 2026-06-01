@@ -1,16 +1,134 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { home } from '@/routes';
+import { ref } from "vue";
+import { Link } from "@inertiajs/vue3";
 
-defineProps<{
-    title?: string;
-    description?: string;
-}>();
+/* HEADER */
+const servicesOpen = ref(false);
+const mobileMenu = ref(false);
+const mobileServicesOpen = ref(false);
+
+/* FAQ */
+const activeFaq = ref<number | null>(null);
+
+const toggleFaq = (index: number) => {
+    activeFaq.value =
+        activeFaq.value === index ? null : index;
+};
+
+/* HERO POINTS */
+const points = [
+    "Lack the time or don't want to build a website yourself?",
+    "Feel tired of confusing website builders and want an easy-to-use platform?",
+    "Don't want to pay a web designer to create a website for you?",
+    "Want a platform where you can benefit from UK-based customer support?",
+];
+
+const templates = [
+  {
+    title: "Accountancy",
+    image: "https://pagio.co.uk/templates/87/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=87",
+    previewLink: "https://accountancy.pagio.co.uk",
+  },
+
+  {
+    title: "Architect",
+    image: "https://pagio.co.uk/templates/15/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=15",
+    previewLink: "https://architect.pagio.co.uk",
+  },
+
+  {
+    title: "Barber",
+    image: "https://pagio.co.uk/templates/57/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=57",
+    previewLink: "https://barber.pagio.co.uk",
+  },
+
+  {
+    title: "Beauty Salon",
+    image: "https://pagio.co.uk/templates/60/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=60",
+    previewLink: "https://beautysalon.pagio.co.uk",
+  },
+
+  {
+    title: "Business Coach",
+    image: "https://pagio.co.uk/templates/385/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=385",
+    previewLink: "https://business-coach.pagio.co.uk",
+  },
+
+  {
+    title: "Car Garage",
+    image: "https://pagio.co.uk/templates/104/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=104",
+    previewLink: "https://cargarage.pagio.co.uk",
+  },
+
+  {
+    title: "Cleaning",
+    image: "https://pagio.co.uk/templates/575/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=575",
+    previewLink: "https://cleaning.pagio.co.uk",
+  },
+
+  {
+    title: "Construction",
+    image: "https://pagio.co.uk/templates/13/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=13",
+    previewLink: "https://construction.pagio.co.uk",
+  },
+
+  {
+    title: "Dentist",
+    image: "https://pagio.co.uk/templates/29/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=29",
+    previewLink: "https://dentist.pagio.co.uk",
+  },
+
+  {
+    title: "Electrician",
+    image: "https://pagio.co.uk/templates/6/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=6",
+    previewLink: "https://electrician.pagio.co.uk",
+  },
+
+  {
+    title: "Restaurant",
+    image: "https://pagio.co.uk/templates/68/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=68",
+    previewLink: "https://restaurant.pagio.co.uk",
+  },
+
+  {
+    title: "Travel Blog",
+    image: "https://pagio.co.uk/templates/36/thumbnail.png",
+    useLink: "https://pagio.co.uk/register/?tpl=36",
+    previewLink: "https://travelblog.pagio.co.uk",
+  },
+];
+
 </script>
 
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+</style>
+
 <template>
- <header class="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
+  <div>
+
+    <!-- HEADER -->
+      <header class="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
 
     <!-- TOP BAR -->
     <div class="hidden lg:block bg-[#08245C] text-white text-sm">
@@ -296,16 +414,102 @@ defineProps<{
     </transition>
 
   </header>
-    <div
-        class="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10"
-    >
-        <div class="w-full max-w-2xl rounded-3xl bg-slate-50 shadow-sm border border-slate-200/60">
-            <div class="flex flex-col gap-8">
-                <slot />
-            </div>
+
+    <!-- HERO -->
+ <div>
+
+    <!-- HERO -->
+  <div class="bg-[#f5f7fb] pt-10 md:pt-20 pb-20">
+
+    <div class="container mx-auto px-5">
+
+      <!-- HEADING -->
+      <h1
+        class="text-center text-3xl md:text-5xl font-bold text-[#3064b8]"
+      >
+        Customisable website templates
+      </h1>
+
+      <!-- DESCRIPTION -->
+      <p
+        class="text-center pb-5 mt-10 max-w-[1100px] mx-auto text-lg leading-9 text-[#0c2356]"
+      >
+        Choose from our range of pre-built website templates.
+        Our drag-and-drop editor allows you to easily edit your selected template
+        to match your business and industry.
+
+        All our website templates are responsive, meaning your website will look
+        great, no matter what device your site visitors are using.
+      </p>
+
+      <!-- GRID -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-10"
+      >
+
+        <!-- CARD -->
+        <div
+          v-for="(template, index) in templates"
+          :key="index"
+          class="mb-5"
+        >
+
+          <!-- IMAGE -->
+          <div
+            class="bg-white shadow-xl overflow-hidden rounded-[10px] group"
+          >
+
+            <img
+              :src="template.image"
+              :alt="template.title"
+              class="w-full h-[360px] object-cover object-top transition duration-500 group-hover:scale-105"
+            />
+
+          </div>
+
+          <!-- TITLE -->
+          <h4
+            class="mt-8 text-2xl text-center md:text-left font-semibold text-[#0c2356]"
+          >
+            {{ template.title }}
+          </h4>
+
+          <!-- LINKS -->
+          <div
+            class="text-center md:flex items-center mt-3 text-[#3064b8]"
+          >
+
+            <a
+              :href="template.useLink"
+              class="text-lg underline mr-3 hover:opacity-70 transition"
+            >
+              Use template
+            </a>
+
+            <span class="hidden md:block">|</span>
+
+            <a
+              :href="template.previewLink"
+              class="text-lg underline md:ml-3 hover:opacity-70 transition"
+            >
+              Preview
+            </a>
+
+          </div>
+
         </div>
+
+      </div>
+
     </div>
-     <footer class="bg-[#1e305e] pt-0 overflow-hidden">
+
+  </div>
+
+  </div>
+    
+
+  </div>
+  <footer class="bg-[#1e305e] pt-0 overflow-hidden">
 
     <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
 

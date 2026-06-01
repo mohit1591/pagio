@@ -9,6 +9,18 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
+
+    resolve: (name) => {
+    const pages = import.meta.glob('./pages/**/*.vue', { eager: true })
+    const page = pages[`./pages/${name}.vue`]
+    if (!page) {
+        console.error('Available pages:', Object.keys(pages))
+        console.error('Looking for:', `./pages/${name}.vue`)
+        throw new Error(`Page not found: ${name}`)
+    }
+    return page
+},
+
     layout: (name) => {
         switch (true) {
             case name === 'Welcome':
@@ -26,8 +38,5 @@ createInertiaApp({
     },
 });
 
-// This will set light / dark mode on page load...
 initializeTheme();
-
-// This will listen for flash toast data from the server...
 initializeFlashToast();

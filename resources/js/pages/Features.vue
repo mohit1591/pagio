@@ -1,16 +1,141 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { home } from '@/routes';
+import { ref } from "vue";
+import { Link } from "@inertiajs/vue3";
 
-defineProps<{
-    title?: string;
-    description?: string;
-}>();
+/* HEADER */
+const servicesOpen = ref(false);
+const mobileMenu = ref(false);
+const mobileServicesOpen = ref(false);
+
+/* FAQ */
+const activeFaq = ref<number | null>(null);
+
+const toggleFaq = (index: number) => {
+    activeFaq.value =
+        activeFaq.value === index ? null : index;
+};
+
+/* HERO POINTS */
+const points = [
+    "Lack the time or don't want to build a website yourself?",
+    "Feel tired of confusing website builders and want an easy-to-use platform?",
+    "Don't want to pay a web designer to create a website for you?",
+    "Want a platform where you can benefit from UK-based customer support?",
+];
+
+/* HERO CONTENT */
+const heroContent = {
+    title: "Free Website Design, Only Pay for Hosting",
+
+    description:
+        "We will design your new website for free. Simply send us your website content, site back and we will do the rest. Your website will be done in less than 2 weeks. Simply pay for hosting.",
+
+    image:
+        "https://static.swiftbuilder.co.uk/img/website-setup-header.webp",
+};
+
+/* STEPS */
+const steps = [
+    {
+        image: "https://static.swiftbuilder.co.uk/img/hiw-1.jpg",
+
+        title: "Select a template",
+
+        description:
+            "Create an account and select one of our mobile-friendly templates.",
+    },
+
+    {
+        image: "https://static.swiftbuilder.co.uk/img/hiw-2.jpg",
+
+        title: "Add your content",
+
+        description:
+            "Add your logo, wording and images to get the website you want.",
+    },
+
+    {
+        image: "https://static.swiftbuilder.co.uk/img/hiw-3.jpg",
+
+        title: "Publish your website",
+
+        description:
+            "Set up your subscription and publish your website to your domain.",
+    },
+];
+
+/* SLIDER IMAGES */
+const images = [
+    "https://s3.eu-west-2.amazonaws.com/swiftbuilder/portal/templates/1515-63bc301360afe.jpeg",
+
+    "https://s3.eu-west-2.amazonaws.com/swiftbuilder/portal/templates/1516-63bc30379eaa5.jpeg",
+
+    "https://s3.eu-west-2.amazonaws.com/swiftbuilder/portal/templates/1517-63bc304a192cd.jpeg",
+
+    "https://s3.eu-west-2.amazonaws.com/swiftbuilder/portal/templates/1518-63bc305975d9c.jpeg",
+
+    "https://s3.eu-west-2.amazonaws.com/swiftbuilder/portal/templates/1536-653f9c884bd18.jpeg",
+
+    "https://s3.eu-west-2.amazonaws.com/swiftbuilder/portal/templates/1537-664b4c0021116.jpeg",
+];
+
+/* FAQ DATA */
+const faqs = [
+    {
+        question: "Can I use my current domain name?",
+
+        answer:
+            "Yes, we can help you connect your current domain to the new website if needed.",
+    },
+
+    {
+        question: "Do you have SEO tools?",
+
+        answer:
+            "Yes, we give you the option to handle your onsite SEO.",
+    },
+
+    {
+        question: "Can I edit my website?",
+
+        answer:
+            "Yes, our website builder gives you the option to easily edit and update your website.",
+    },
+
+    {
+        question: "Where will my site be hosted?",
+
+        answer:
+            "Your website will be hosted on our platform. We use the same hosting as Netflix, AirBNB and Amazon.",
+    },
+
+    {
+        question: "How long will it take to set up my website?",
+
+        answer:
+            "Your website will be set up in as little as 2 weeks.",
+    },
+];
 </script>
 
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: all 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+</style>
+
 <template>
- <header class="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
+  <div>
+
+    <!-- HEADER -->
+      <header class="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
 
     <!-- TOP BAR -->
     <div class="hidden lg:block bg-[#08245C] text-white text-sm">
@@ -296,16 +421,220 @@ defineProps<{
     </transition>
 
   </header>
-    <div
-        class="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10"
-    >
-        <div class="w-full max-w-2xl rounded-3xl bg-slate-50 shadow-sm border border-slate-200/60">
-            <div class="flex flex-col gap-8">
-                <slot />
-            </div>
+
+    <!-- HERO -->
+ <div>
+
+    <!-- HERO -->
+    <section class="bg-[#3064b8] py-20 px-5">
+
+      <div class="max-w-[1200px] mx-auto text-center">
+
+        <h1
+          class="text-3xl md:text-5xl font-bold text-white leading-tight"
+        >
+          Everything you need to easily build a professional website
+        </h1>
+
+        <p
+          class="text-white text-lg md:text-xl mt-6 leading-9"
+        >
+          What if creating a website was easy? With Pagio Website Builder, it is.
+        </p>
+
+        <p
+          class="text-white text-lg md:text-xl mt-2 leading-9"
+        >
+          You’ll control your website and be able to edit quickly, easily and hassle-free
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- FEATURES -->
+    <section class="py-20 px-5">
+
+      <div class="max-w-[1200px] mx-auto">
+
+        <h2
+          class="text-center text-3xl md:text-4xl mb-16 font-semibold"
+        >
+          Easy and fast way to design your website
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-10">
+
+          <div
+            v-for="(feature, index) in features"
+            :key="index"
+            class="text-center"
+          >
+
+            <img
+              :src="feature.image"
+              class="mx-auto mb-8"
+            />
+
+            <h3
+              class="text-[#0c2356] text-2xl font-bold mb-4"
+            >
+              {{ feature.title }}
+            </h3>
+
+            <p
+              class="text-[#0c2356] text-lg leading-8"
+            >
+              {{ feature.description }}
+            </p>
+
+          </div>
+
         </div>
-    </div>
-     <footer class="bg-[#1e305e] pt-0 overflow-hidden">
+
+      </div>
+
+    </section>
+
+    <!-- SUPPORT -->
+    <section class="py-20 px-5 bg-[#f5f7fb]">
+
+      <div
+        class="max-w-[1200px] mx-auto grid md:grid-cols-2 gap-16 items-center"
+      >
+
+        <!-- IMAGE -->
+        <div>
+
+          <img
+            src="https://s3.eu-west-2.amazonaws.com/swiftbuilder/sites/394/sd_64c0e0467ace5.jpg?ts=2023-07-26%2008%3A58%3A46"
+            class="rounded-2xl w-full"
+          />
+
+        </div>
+
+        <!-- CONTENT -->
+        <div>
+
+          <h2
+            class="text-3xl md:text-4xl font-bold text-[#0c2356] mb-6"
+          >
+            5 star UK-based customer support
+          </h2>
+
+          <p
+            class="text-[#0c2356] text-lg leading-9"
+          >
+            You can call, email or video chat with real people in real-time.
+            No need to wait days for a response from a support ticket.
+          </p>
+
+          <div class="flex flex-wrap gap-5 mt-10">
+
+            <a
+              href="https://pagio.co.uk/free-website-setup"
+              class="bg-[#3064b8] hover:bg-[#24539d] transition text-white px-8 py-4 rounded-xl font-semibold"
+            >
+              Free website set up
+            </a>
+
+            <a
+              href="https://pagio.co.uk/free-website-transfer"
+              class="bg-[#11C786] hover:bg-[#0fa775] transition text-white px-8 py-4 rounded-xl font-semibold"
+            >
+              Free website transfer
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- KEY FEATURES -->
+    <section class="py-20 px-5">
+
+      <div class="max-w-[1200px] mx-auto">
+
+        <h2
+          class="text-center text-[#3064b8] text-3xl md:text-4xl font-bold mb-16"
+        >
+          Key Features
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-10">
+
+          <div
+            v-for="(item, index) in keyFeatures"
+            :key="index"
+            class="bg-white rounded-2xl p-8 shadow-[0_4px_20px_rgba(0,0,0,0.05)]"
+          >
+
+            <h3
+              class="text-[#0c2356] text-2xl font-bold mb-4"
+            >
+              {{ item.title }}
+            </h3>
+
+            <p
+              class="text-[#0c2356] text-lg leading-8"
+            >
+              {{ item.description }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TESTIMONIAL -->
+    <section class="py-20 px-5 bg-[#f5f7fb]">
+
+      <div
+        class="max-w-[1000px] mx-auto grid md:grid-cols-2 gap-16 items-center"
+      >
+
+        <!-- IMAGE -->
+        <div>
+
+          <img
+            src="https://s3.eu-west-2.amazonaws.com/swiftbuilder/sites/394/sd_64c0efe588dd1.jpg?ts=2023-07-26%2010%3A05%3A25"
+            class="rounded-2xl w-full"
+          />
+
+        </div>
+
+        <!-- TEXT -->
+        <div>
+
+          <p
+            class="text-[#0c2356] text-xl italic leading-10"
+          >
+            "The first thing that stood out to me was just how easy Pagio's website builder was to use, the design tool was very intuitive."
+          </p>
+
+          <h4
+            class="text-[#3064b8] text-3xl font-bold mt-8"
+          >
+            Graham Kirk Video
+          </h4>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+    
+
+  </div>
+  <footer class="bg-[#1e305e] pt-0 overflow-hidden">
 
     <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
 

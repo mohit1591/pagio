@@ -1,16 +1,62 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { home } from '@/routes';
+import { ref } from "vue";
+import { Link } from "@inertiajs/vue3";
 
-defineProps<{
-    title?: string;
-    description?: string;
-}>();
+const servicesOpen = ref(false);
+const mobileMenu = ref(false);
+const mobileServicesOpen = ref(false);
+
+const faqOpen = ref<number | null>(null);
+
+const toggleFaq = (index: number) => {
+  faqOpen.value = faqOpen.value === index ? null : index;
+};
+
+const faqs = [
+  {
+    question: "Can I use my current domain name?",
+    answer:
+      "Yes, we can help you connect your current domain to the new website if needed.",
+  },
+  {
+    question: "Do you have SEO tools?",
+    answer:
+      "Yes, we give you the option to handle your onsite SEO.",
+  },
+  {
+    question:
+      "I have no technical skills. Will I be able to use the website builder?",
+    answer:
+      "Yes, we've designed an editing tool that's user-friendly and simple to use.",
+  },
+];
+const steps = [
+  {
+    image: "https://static.swiftbuilder.co.uk/img/hiw-1.jpg",
+    title: "Select a template",
+    description:
+      "Create an account and select one of our mobile-friendly templates.",
+  },
+  {
+    image: "https://static.swiftbuilder.co.uk/img/hiw-2.jpg",
+    title: "Add your content",
+    description:
+      "Add your logo, wording and images to get the website you want.",
+  },
+  {
+    image: "https://static.swiftbuilder.co.uk/img/hiw-3.jpg",
+    title: "Publish your website",
+    description:
+      "Set up your subscription and publish your website to your domain.",
+  },
+];
 </script>
 
 <template>
- <header class="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
+  <div>
+
+    <!-- HEADER -->
+      <header class="w-full bg-white border-b border-gray-200 sticky top-0 z-50">
 
     <!-- TOP BAR -->
     <div class="hidden lg:block bg-[#08245C] text-white text-sm">
@@ -296,16 +342,149 @@ defineProps<{
     </transition>
 
   </header>
-    <div
-        class="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10"
-    >
-        <div class="w-full max-w-2xl rounded-3xl bg-slate-50 shadow-sm border border-slate-200/60">
-            <div class="flex flex-col gap-8">
-                <slot />
+
+    <!-- HERO -->
+    <section class="bg-[#3064B8] py-20">
+
+      <div class="max-w-[1400px] mx-auto px-6">
+
+        <div class="grid md:grid-cols-2 gap-10 items-center">
+
+          <div>
+
+            <h1 class="text-white text-5xl font-bold leading-tight">
+              Easily create a website with the UK's best website builder
+            </h1>
+
+            <p class="text-white mt-6 text-lg">
+              Use our drag-and-drop website builder to create a professional website.
+            </p>
+
+            <div class="flex gap-4 mt-8">
+
+              <a
+                href="#"
+                class="bg-[#11C786] text-white px-8 py-4 rounded-xl font-semibold"
+              >
+                Enquire now
+              </a>
+
+              <a
+                href="/register"
+                class="bg-white text-[#08245C] px-8 py-4 rounded-xl font-semibold"
+              >
+                Get started
+              </a>
+
             </div>
+
+          </div>
+
+          <div>
+            <img
+              src="https://static.swiftbuilder.co.uk/img/website-buildown-header.webp"
+              class="w-full"
+            />
+          </div>
+
         </div>
+
+      </div>
+
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-20 bg-[#f5f7fb]">
+
+      <div class="max-w-[1000px] mx-auto px-6">
+
+        <h2 class="text-4xl font-bold text-center mb-10">
+          Frequently asked questions
+        </h2>
+
+        <div
+          v-for="(faq, index) in faqs"
+          :key="index"
+          class="bg-white rounded-2xl p-6 mb-5 cursor-pointer"
+          @click="toggleFaq(index)"
+        >
+
+          <div class="flex justify-between items-center">
+
+            <h3 class="font-semibold text-xl">
+              {{ faq.question }}
+            </h3>
+
+            <span>
+              {{ faqOpen === index ? '-' : '+' }}
+            </span>
+
+          </div>
+
+          <transition
+            enter-active-class="transition duration-300"
+            enter-from-class="opacity-0 max-h-0"
+            enter-to-class="opacity-100 max-h-[300px]"
+          >
+
+            <p
+              v-if="faqOpen === index"
+              class="mt-4 text-gray-600"
+            >
+              {{ faq.answer }}
+            </p>
+
+          </transition>
+
+        </div>
+
+      </div>
+
+    </section>
+    <section>
+     <div class="container mx-auto pb-10 md:pb-20 px-5">
+
+    <h2
+      class="pt-10 md:pt-20 pb-10 text-2xl md:text-3xl text-center font-bold"
+    >
+      How it works
+    </h2>
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 gap-10 pt-5"
+    >
+
+      <div
+        v-for="(step, index) in steps"
+        :key="index"
+        class="text-center md:text-left"
+      >
+
+        <img
+          :src="step.image"
+          :alt="step.title"
+          class="w-full rounded-xl"
+          style="image-rendering: -webkit-optimize-contrast;"
+        />
+
+        <h3 class="text-2xl font-bold mt-5">
+          {{ step.title }}
+        </h3>
+
+        <p class="text-lg mt-3 text-gray-600">
+          {{ step.description }}
+        </p>
+
+      </div>
+
     </div>
-     <footer class="bg-[#1e305e] pt-0 overflow-hidden">
+
+  </div>
+    </section>
+    
+
+  </div>
+   <footer class="bg-[#1e305e] pt-0 overflow-hidden">
 
     <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
 
@@ -359,47 +538,88 @@ defineProps<{
         </div>
 
         <!-- COLUMN -->
-        <div>
+       <!-- SERVICES DROPDOWN -->
+<div
+  class="relative"
+  @mouseenter="servicesOpen = true"
+  @mouseleave="servicesOpen = false"
+>
+  
+  <!-- BUTTON -->
+  <button
+    class="flex items-center gap-1 text-[#08245C] text-[18px] font-medium hover:text-[#11C786] transition-all duration-300"
+  >
+    Services
 
-          <h3
-            class="text-white text-[24px] font-bold mb-6"
-          >
-            Services
-          </h3>
+    <svg
+      class="w-4 h-4 transition-all duration-300"
+      :class="servicesOpen ? 'rotate-180' : ''"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M19 9l-7 7-7-7"
+      />
+    </svg>
+  </button>
 
-          <div class="space-y-4">
+  <!-- DROPDOWN -->
+  <transition
+    enter-active-class="transition duration-300 ease-out"
+    enter-from-class="opacity-0 translate-y-3"
+    enter-to-class="opacity-100 translate-y-0"
+    leave-active-class="transition duration-200 ease-in"
+    leave-from-class="opacity-100 translate-y-0"
+    leave-to-class="opacity-0 translate-y-3"
+  >
+    <div
+      v-if="servicesOpen"
+      class="absolute top-full left-0 mt-4 w-[270px] bg-white border border-gray-200 shadow-[0_10px_40px_rgba(0,0,0,0.12)] z-50 overflow-hidden"
+    >
 
-            <a
-              href="/build-your-website"
-              class="block text-white/80 hover:text-white transition"
-            >
-              Build your own website
-            </a>
+      <a
+        href="/build-your-website"
+        class="block px-8 py-5 text-[17px] text-[#08245C] hover:bg-[#f8fafc] hover:text-[#11C786] transition-all duration-200"
+      >
+        Build your own website
+      </a>
 
-            <a
-              href="/free-website-design"
-              class="block text-white/80 hover:text-white transition"
-            >
-              Free website setup
-            </a>
+      <a
+        href="/free-website-design"
+        class="block px-8 py-5 text-[17px] text-[#08245C] hover:bg-[#f8fafc] hover:text-[#11C786] transition-all duration-200"
+      >
+        Free website design
+      </a>
 
-            <a
-              href="/free-website-transfer"
-              class="block text-white/80 hover:text-white transition"
-            >
-              Free website transfer
-            </a>
+      <a
+        href="/free-website-transfer"
+        class="block px-8 py-5 text-[17px] text-[#08245C] hover:bg-[#f8fafc] hover:text-[#11C786] transition-all duration-200"
+      >
+        Free website transfer
+      </a>
 
-            <a
-              href="/free-website-redesign"
-              class="block text-white/80 hover:text-white transition"
-            >
-              Free website redesign
-            </a>
+      <a
+        href="/free-website-redesign"
+        class="block px-8 py-5 text-[17px] text-[#08245C] hover:bg-[#f8fafc] hover:text-[#11C786] transition-all duration-200"
+      >
+        Free website redesign
+      </a>
 
-          </div>
+      <a
+        href="/design-for-clients"
+        class="block px-8 py-5 text-[17px] text-[#08245C] hover:bg-[#f8fafc] hover:text-[#11C786] transition-all duration-200"
+      >
+        Design for clients
+      </a>
 
-        </div>
+    </div>
+  </transition>
+
+</div>
 
         <!-- COLUMN -->
         <div>

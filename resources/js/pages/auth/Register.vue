@@ -13,6 +13,7 @@ import { store } from '@/routes/register';
 </script>
 
 <template>
+
     <Head title="Register" />
 
     <!-- Page wrapper — full-screen centered layout -->

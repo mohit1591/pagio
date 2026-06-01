@@ -4,7 +4,9 @@ namespace App\Actions\Fortify;
 
 use App\Concerns\PasswordValidationRules;
 use App\Concerns\ProfileValidationRules;
+use App\Mail\SendOtpMail;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
@@ -24,10 +26,25 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => $input['password'],
+        // Generate 6-digit OTP
+        $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        // Create user (unverified)
+        $user = User::create([
+            'name'           => $input['name'],
+            'email'          => $input['email'],
+            'password'       => $input['password'],
+            'otp'            => $otp,
+            'otp_expires_at' => now()->addMinutes(10),
+            'otp_verified'   => false,
         ]);
+
+        // Send OTP email
+        Mail::to($user->email)->send(new SendOtpMail($otp));
+
+        // Store user id in session for OTP verification
+        session(['pending_user_id' => $user->id]);
+
+        return $user;
     }
 }
